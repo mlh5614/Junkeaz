@@ -10,10 +10,8 @@
         android:id="@+id/profileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:onClick="buttonOnClick"
         android:text="User Profile"
         tools:layout_editor_absoluteY="0dp" />
@@ -22,20 +20,19 @@
         android:id="@+id/newPostButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
 
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
         android:onClick="buttonOnClick"
         android:text="Create Post"
-
         tools:layout_editor_absoluteY="0dp" />
 
     <Button
         android:id="@+id/viewListings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:text="View Items"
         tools:layout_editor_absoluteX="147dp"
         tools:layout_editor_absoluteY="0dp" />
