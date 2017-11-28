@@ -1,266 +1,133 @@
 package junkeaz.junkeaz;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.HashMap;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import android.app.ProgressDialog;
+
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.net.Uri;
-import android.provider.MediaStore;
-import java.io.BufferedReader;
-import java.net.URLEncoder;
-import java.util.Map;
-import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import javax.net.ssl.HttpsURLConnection;
-import java.io.UnsupportedEncodingException;
-import android.util.Base64;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.Toast;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 public class MainActivity extends AppCompatActivity {
+    SignInButton button;
+    FirebaseAuth mAuth;
+    private final static int RC_SIGN_IN = 2;
 
-    Bitmap bitmap;
+    GoogleApiClient mGoogleApiClient;
+    FirebaseAuth.AuthStateListener mAuthListener;
 
-    boolean check = true;
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-    Button SelectImageGallery, UploadImageServer;
-
-    ImageView imageView;
-
-    EditText imageName;
-
-    ProgressDialog progressDialog ;
-
-    String GetImageNameEditText;
-
-    String ImageName = "image_name" ;
-
-    String ImagePath = "image_path" ;
-
-    String ServerUploadPath ="https://junkeaz.000webhostapp.com/img_upload_to_server.php" ;
+        mAuth.addAuthStateListener(mAuthListener);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        imageView = (ImageView)findViewById(R.id.imageView);
+        button = (SignInButton) findViewById(R.id.sign_in_button);
+        mAuth = FirebaseAuth.getInstance();
 
-        imageName = (EditText)findViewById(R.id.editTextImageName);
-
-        SelectImageGallery = (Button)findViewById(R.id.buttonSelect);
-
-        UploadImageServer = (Button)findViewById(R.id.buttonUpload);
-
-        SelectImageGallery.setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent();
-
-                intent.setType("image/*");
-
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-
-                startActivityForResult(Intent.createChooser(intent, "Select Image From Gallery"), 1);
-
+            public void onClick(View v) {
+                signIn();
             }
         });
 
-
-        UploadImageServer.setOnClickListener(new View.OnClickListener() {
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onClick(View view) {
-
-                GetImageNameEditText = imageName.getText().toString();
-
-                ImageUploadToServerFunction();
-
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser() != null){
+                    startActivity(new Intent(MainActivity.this, MainMenu.class));
+                }
             }
-        });
+        };
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+    }
+
+//    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//            .requestIdToken(getString(R.string.default_web_client_id))
+//            .requestEmail()
+//            .build();
+
+    private void signIn() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     @Override
-    protected void onActivityResult(int RC, int RQC, Intent I) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        super.onActivityResult(RC, RQC, I);
-
-        if (RC == 1 && RQC == RESULT_OK && I != null && I.getData() != null) {
-
-            Uri uri = I.getData();
-
-            try {
-
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-
-                imageView.setImageBitmap(bitmap);
-
-            } catch (IOException e) {
-
-                e.printStackTrace();
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()) {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = result.getSignInAccount();
+                firebaseAuthWithGoogle(account);
+            } else {
+                // Google Sign In failed, update UI appropriately
+                Toast.makeText(MainActivity.this, "Auth went wrong", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    public void ImageUploadToServerFunction(){
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("TAG", "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            //updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("TAG", "signInWithCredential:failure", task.getException());
+                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            //updateUI(null);
+                        }
 
-        ByteArrayOutputStream byteArrayOutputStreamObject ;
-
-        byteArrayOutputStreamObject = new ByteArrayOutputStream();
-
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject);
-
-        byte[] byteArrayVar = byteArrayOutputStreamObject.toByteArray();
-
-        final String ConvertImage = Base64.encodeToString(byteArrayVar, Base64.DEFAULT);
-
-        class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
-
-            @Override
-            protected void onPreExecute() {
-
-                super.onPreExecute();
-
-                progressDialog = ProgressDialog.show(MainActivity.this,"Image is Uploading","Please Wait",false,false);
-            }
-
-            @Override
-            protected void onPostExecute(String string1) {
-
-                super.onPostExecute(string1);
-
-                // Dismiss the progress dialog after done uploading.
-                progressDialog.dismiss();
-
-                // Printing uploading success message coming from server on android app.
-                Toast.makeText(MainActivity.this,string1,Toast.LENGTH_LONG).show();
-
-                // Setting image as transparent after done uploading.
-                imageView.setImageResource(android.R.color.transparent);
-
-
-            }
-
-            @Override
-            protected String doInBackground(Void... params) {
-
-                ImageProcessClass imageProcessClass = new ImageProcessClass();
-
-                HashMap<String,String> HashMapParams = new HashMap<String,String>();
-
-                HashMapParams.put(ImageName, GetImageNameEditText);
-
-                HashMapParams.put(ImagePath, ConvertImage);
-
-                String FinalData = imageProcessClass.ImageHttpRequest(ServerUploadPath, HashMapParams);
-
-                return FinalData;
-            }
-        }
-        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
-
-        AsyncTaskUploadClassOBJ.execute();
-    }
-
-    public class ImageProcessClass{
-
-        public String ImageHttpRequest(String requestURL,HashMap<String, String> PData) {
-
-            StringBuilder stringBuilder = new StringBuilder();
-
-            try {
-
-                URL url;
-                HttpURLConnection httpURLConnectionObject ;
-                OutputStream OutPutStream;
-                BufferedWriter bufferedWriterObject ;
-                BufferedReader bufferedReaderObject ;
-                int RC ;
-
-                url = new URL(requestURL);
-
-                httpURLConnectionObject = (HttpURLConnection) url.openConnection();
-
-                httpURLConnectionObject.setReadTimeout(19000);
-
-                httpURLConnectionObject.setConnectTimeout(19000);
-
-                httpURLConnectionObject.setRequestMethod("POST");
-
-                httpURLConnectionObject.setDoInput(true);
-
-                httpURLConnectionObject.setDoOutput(true);
-
-                OutPutStream = httpURLConnectionObject.getOutputStream();
-
-                bufferedWriterObject = new BufferedWriter(
-
-                        new OutputStreamWriter(OutPutStream, "UTF-8"));
-
-                bufferedWriterObject.write(bufferedWriterDataFN(PData));
-
-                bufferedWriterObject.flush();
-
-                bufferedWriterObject.close();
-
-                OutPutStream.close();
-
-                RC = httpURLConnectionObject.getResponseCode();
-
-                if (RC == HttpsURLConnection.HTTP_OK) {
-
-                    bufferedReaderObject = new BufferedReader(new InputStreamReader(httpURLConnectionObject.getInputStream()));
-
-                    stringBuilder = new StringBuilder();
-
-                    String RC2;
-
-                    while ((RC2 = bufferedReaderObject.readLine()) != null){
-
-                        stringBuilder.append(RC2);
+                        // ...
                     }
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return stringBuilder.toString();
-        }
-
-        private String bufferedWriterDataFN(HashMap<String, String> HashMapParams) throws UnsupportedEncodingException {
-
-            StringBuilder stringBuilderObject;
-
-            stringBuilderObject = new StringBuilder();
-
-            for (Map.Entry<String, String> KEY : HashMapParams.entrySet()) {
-
-                if (check)
-
-                    check = false;
-                else
-                    stringBuilderObject.append("&");
-
-                stringBuilderObject.append(URLEncoder.encode(KEY.getKey(), "UTF-8"));
-
-                stringBuilderObject.append("=");
-
-                stringBuilderObject.append(URLEncoder.encode(KEY.getValue(), "UTF-8"));
-            }
-
-            return stringBuilderObject.toString();
-        }
+                });
 
     }
 }

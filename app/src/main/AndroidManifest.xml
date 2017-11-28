@@ -38,6 +38,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ImageUploads" />
+        <activity android:name=".MainMenu" />
+        <activity android:name=".NewPost" />
+        <activity android:name=".Profile" />
+        <activity android:name=".MapsActivity" />
+
 <!--        <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps">
