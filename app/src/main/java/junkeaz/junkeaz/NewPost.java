@@ -8,6 +8,7 @@ import android.widget.Button;
 
 public class NewPost extends AppCompatActivity {
     Button postItemButton;
+    Button uploadImageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,12 +16,48 @@ public class NewPost extends AppCompatActivity {
         setContentView(R.layout.activity_new_post);
 
         postItemButton = (Button) findViewById(R.id.postItemButton);
+        uploadImageButton = (Button) findViewById(R.id.uploadImageButton);
 
-        postItemButton.setOnClickListener(new View.OnClickListener() {
+       /* postItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(NewPost.this, MainMenu.class));
             }
         });
+
+        uploadImageButton.setOnClickListener (new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(NewPost.this, ImageUploads.class));
+            }
+        }); */
+
+
+
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        //idk if it matters
+
+    }
+
+    public void buttonOnClick(View view) {
+        switch (view.getId()) {
+            case R.id.postItemButton:
+                startActivity(new Intent(NewPost.this, MainMenu.class));
+                break;
+
+            case R.id.uploadImageButton:
+                startActivity(new Intent(NewPost.this, ImageUploads.class));
+                break;
+            default:
+                //do nothing
+                break;
+
+        }
+    }
+
 }

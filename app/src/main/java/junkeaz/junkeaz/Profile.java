@@ -62,4 +62,12 @@ public class Profile extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        //idk if it matters
+
+    }
+
 }

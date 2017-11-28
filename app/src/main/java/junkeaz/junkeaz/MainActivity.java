@@ -78,6 +78,13 @@ public class MainActivity extends AppCompatActivity {
                 .build();
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        //idk if it matters
+
+    }
+
 //    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 //            .requestIdToken(getString(R.string.default_web_client_id))
 //            .requestEmail()

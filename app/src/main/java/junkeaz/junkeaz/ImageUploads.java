@@ -53,7 +53,7 @@ public class ImageUploads extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activitiy_images);
 
         imageView = (ImageView)findViewById(R.id.imageView);
 
@@ -89,6 +89,13 @@ public class ImageUploads extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        //idk if it matters
+
     }
 
     @Override
@@ -145,6 +152,11 @@ public class ImageUploads extends AppCompatActivity {
 
                 // Printing uploading success message coming from server on android app.
                 Toast.makeText(ImageUploads.this,string1,Toast.LENGTH_LONG).show();
+
+                if (string1.equals("Your Image Has Been Uploaded.")) {
+                    startActivity(new Intent(ImageUploads.this, NewPost.class));
+
+                }
 
                 // Setting image as transparent after done uploading.
                 imageView.setImageResource(android.R.color.transparent);

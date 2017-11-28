@@ -7,11 +7,45 @@
     tools:context="junkeaz.junkeaz.NewPost">
 
     <Button
-        android:id="@+id/postItemButton"
+        android:id="@id/postItemButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="48dp"
+        android:onClick="buttonOnClick"
         android:text="Post Item"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />
+
+    <Button
+        android:id="@id/uploadImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:onClick="buttonOnClick"
+        android:text="Upload Image" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/postItemButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="81dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        tools:text="Enter a description of your item." />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/uploadImageButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
+        app:srcCompat="@android:drawable/ic_input_add" />
 
 </RelativeLayout>
