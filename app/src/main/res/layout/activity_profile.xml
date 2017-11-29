@@ -32,6 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_below="@+id/textName"
         android:textSize="18dp"
         android:textStyle="bold"
         android:textAlignment="center"/>
@@ -48,5 +49,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/mainMenuButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/sign_out_button"
+        android:layout_alignStart="@+id/sign_out_button"
+        android:layout_marginBottom="34dp"
+        android:text="Main Menu" />
 
 </RelativeLayout>

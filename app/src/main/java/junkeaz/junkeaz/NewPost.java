@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+//CLASS ISN'T BEING USED -- CAN BE DELETED
+
 public class NewPost extends AppCompatActivity {
     Button postItemButton;
     Button uploadImageButton;

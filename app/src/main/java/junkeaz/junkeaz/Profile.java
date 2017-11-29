@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Profile extends AppCompatActivity {
     Button button;
+    Button mainMenuButton;
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
     ImageView imageView;
@@ -30,6 +31,7 @@ public class Profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        mainMenuButton = (Button) findViewById(R.id.mainMenuButton);
         button = (Button) findViewById(R.id.sign_out_button);
         mAuth = FirebaseAuth.getInstance();
 
@@ -53,6 +55,13 @@ public class Profile extends AppCompatActivity {
                 }
             }
         };
+
+        mainMenuButton.setOnClickListener(new View.OnClickListener() {
+           @Override
+            public void onClick(View v) {
+               startActivity(new Intent(Profile.this, MainMenu.class));
+           }
+        });
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

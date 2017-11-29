@@ -27,7 +27,8 @@ import java.io.UnsupportedEncodingException;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
-
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class ImageUploads extends AppCompatActivity {
     Bitmap bitmap;
@@ -42,6 +43,8 @@ public class ImageUploads extends AppCompatActivity {
 
     EditText editTextPostDescription;
 
+    EditText editTextStreetAddress;
+
     ProgressDialog progressDialog ;
 
     String GetImageTitleEditText = "title1";
@@ -50,9 +53,13 @@ public class ImageUploads extends AppCompatActivity {
 
     String GetStreetAddressEditText = "123 abc st";
 
-    String GetPostingUser = "max";
+    String GetPostingUser = "user1";
 
     String GetClaimingUser = "unclaimed";
+
+    String GetPostingUserName = "max";
+
+    String GetClaimingUserName = "unclaimed";
 
     String GetClaimed = "no";
 
@@ -66,7 +73,11 @@ public class ImageUploads extends AppCompatActivity {
 
     String ClaimingUser = "claiming_user";
 
+    String ClaimingUserName = "claiming_user_name";
+
     String PostingUser = "posting_user";
+
+    String PostingUserName = "posting_user_name";
 
     String PostDescription = "description";
 
@@ -82,6 +93,8 @@ public class ImageUploads extends AppCompatActivity {
         editTextImageTitle = (EditText)findViewById(R.id.editTextImageName);
 
         editTextPostDescription = (EditText)findViewById(R.id.editTextPostDescription);
+
+        editTextStreetAddress = (EditText)findViewById(R.id.editTextStreetAddress);
 
         SelectImageGallery = (Button)findViewById(R.id.buttonSelect);
 
@@ -107,9 +120,24 @@ public class ImageUploads extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                //Get the Post Title
                 GetImageTitleEditText = editTextImageTitle.getText().toString();
 
+                //Get the Post Description
                 GetPostDescriptionEditText = editTextPostDescription.getText().toString();
+
+                //Get the User ID and Display Name
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null) {
+                    GetPostingUserName = user.getDisplayName();
+                    String email = user.getEmail();
+                    Uri photoUrl = user.getPhotoUrl();
+                    boolean emailVerified = user.isEmailVerified();
+                    GetPostingUser = user.getUid();
+                }
+
+                //Get the Street Address
+                GetStreetAddressEditText = editTextStreetAddress.getText().toString();
 
                 ImageUploadToServerFunction();
 
@@ -197,10 +225,13 @@ public class ImageUploads extends AppCompatActivity {
 
                 HashMap<String,String> HashMapParams = new HashMap<String,String>();
 
-                //posting_user,title,description,image_path,street_address,claimed,claiming_user
+                //posting_user,posting_user_name,title,description,image_path,street_address,claimed,claiming_user,claiming_user_name
 
                 //posting_user
                 HashMapParams.put(PostingUser, GetPostingUser);
+
+                //posting_user_name
+                HashMapParams.put(PostingUserName, GetPostingUserName);
 
                 //title
                 HashMapParams.put(ImageTitle, GetImageTitleEditText);
@@ -219,6 +250,9 @@ public class ImageUploads extends AppCompatActivity {
 
                 //claiming_user
                 HashMapParams.put(ClaimingUser, GetClaimingUser);
+
+                //claiming_user_name
+                HashMapParams.put(ClaimingUserName, GetClaimingUserName);
 
                 String FinalData = imageProcessClass.ImageHttpRequest(ServerUploadPath, HashMapParams);
 
