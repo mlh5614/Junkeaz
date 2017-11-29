@@ -38,17 +38,39 @@ public class ImageUploads extends AppCompatActivity {
 
     ImageView imageView;
 
-    EditText imageName;
+    EditText editTextImageTitle;
+
+    EditText editTextPostDescription;
 
     ProgressDialog progressDialog ;
 
-    String GetImageNameEditText;
+    String GetImageTitleEditText = "title1";
 
-    String ImageName = "image_name" ;
+    String GetPostDescriptionEditText = "description1";
+
+    String GetStreetAddressEditText = "123 abc st";
+
+    String GetPostingUser = "max";
+
+    String GetClaimingUser = "unclaimed";
+
+    String GetClaimed = "no";
+
+    String ImageTitle = "title" ;
 
     String ImagePath = "image_path" ;
 
-    String ServerUploadPath ="https://junkeaz.000webhostapp.com/img_upload_to_server.php" ;
+    String StreetAddress = "street_address";
+
+    String Claimed = "claimed";
+
+    String ClaimingUser = "claiming_user";
+
+    String PostingUser = "posting_user";
+
+    String PostDescription = "description";
+
+    String ServerUploadPath ="https://junkeaz.000webhostapp.com/post_listing_to_server.php" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +79,9 @@ public class ImageUploads extends AppCompatActivity {
 
         imageView = (ImageView)findViewById(R.id.imageView);
 
-        imageName = (EditText)findViewById(R.id.editTextImageName);
+        editTextImageTitle = (EditText)findViewById(R.id.editTextImageName);
+
+        editTextPostDescription = (EditText)findViewById(R.id.editTextPostDescription);
 
         SelectImageGallery = (Button)findViewById(R.id.buttonSelect);
 
@@ -83,7 +107,9 @@ public class ImageUploads extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                GetImageNameEditText = imageName.getText().toString();
+                GetImageTitleEditText = editTextImageTitle.getText().toString();
+
+                GetPostDescriptionEditText = editTextPostDescription.getText().toString();
 
                 ImageUploadToServerFunction();
 
@@ -153,8 +179,8 @@ public class ImageUploads extends AppCompatActivity {
                 // Printing uploading success message coming from server on android app.
                 Toast.makeText(ImageUploads.this,string1,Toast.LENGTH_LONG).show();
 
-                if (string1.equals("Your Image Has Been Uploaded.")) {
-                    startActivity(new Intent(ImageUploads.this, NewPost.class));
+                if (string1.equals("Your Post Has Been Uploaded.")) {
+                    startActivity(new Intent(ImageUploads.this, MainMenu.class));
 
                 }
 
@@ -171,9 +197,28 @@ public class ImageUploads extends AppCompatActivity {
 
                 HashMap<String,String> HashMapParams = new HashMap<String,String>();
 
-                HashMapParams.put(ImageName, GetImageNameEditText);
+                //posting_user,title,description,image_path,street_address,claimed,claiming_user
 
+                //posting_user
+                HashMapParams.put(PostingUser, GetPostingUser);
+
+                //title
+                HashMapParams.put(ImageTitle, GetImageTitleEditText);
+
+                //description
+                HashMapParams.put(PostDescription, GetPostDescriptionEditText);
+
+                //image_path
                 HashMapParams.put(ImagePath, ConvertImage);
+
+                //street_address
+                HashMapParams.put(StreetAddress, GetStreetAddressEditText);
+
+                //claimed
+                HashMapParams.put(Claimed, GetClaimed);
+
+                //claiming_user
+                HashMapParams.put(ClaimingUser, GetClaimingUser);
 
                 String FinalData = imageProcessClass.ImageHttpRequest(ServerUploadPath, HashMapParams);
 
