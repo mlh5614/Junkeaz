@@ -35,7 +35,7 @@ public class MainMenu extends AppCompatActivity {
                 break;
 
             case R.id.newPostButton:
-                startActivity(new Intent(MainMenu.this, NewPost.class));
+                startActivity(new Intent(MainMenu.this, ImageUploads.class));
                 break;
             case R.id.viewListings:
                // startActivity(new Intent( MainMenu.this, ImageUploads.class));

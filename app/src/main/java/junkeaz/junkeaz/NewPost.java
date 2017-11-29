@@ -5,10 +5,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class NewPost extends AppCompatActivity {
     Button postItemButton;
     Button uploadImageButton;
+    EditText postDescription;
+    String description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +20,7 @@ public class NewPost extends AppCompatActivity {
 
         postItemButton = (Button) findViewById(R.id.postItemButton);
         uploadImageButton = (Button) findViewById(R.id.uploadImageButton);
+        postDescription = (EditText) findViewById(R.id.postDescription);
 
        /* postItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +51,8 @@ public class NewPost extends AppCompatActivity {
     public void buttonOnClick(View view) {
         switch (view.getId()) {
             case R.id.postItemButton:
-                startActivity(new Intent(NewPost.this, MainMenu.class));
+                description = postDescription.getText().toString();
+                //startActivity(new Intent(NewPost.this, MainMenu.class));
                 break;
 
             case R.id.uploadImageButton:
