@@ -32,55 +32,30 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class ImageUploads extends AppCompatActivity {
     Bitmap bitmap;
-
     boolean check = true;
-
     Button SelectImageGallery, UploadImageServer;
-
     ImageView imageView;
-
     EditText editTextImageTitle;
-
     EditText editTextPostDescription;
-
     EditText editTextStreetAddress;
-
     ProgressDialog progressDialog ;
-
     String GetImageTitleEditText = "title1";
-
     String GetPostDescriptionEditText = "description1";
-
     String GetStreetAddressEditText = "123 abc st";
-
     String GetPostingUser = "user1";
-
     String GetClaimingUser = "unclaimed";
-
     String GetPostingUserName = "max";
-
     String GetClaimingUserName = "unclaimed";
-
     String GetClaimed = "no";
-
     String ImageTitle = "title" ;
-
     String ImagePath = "image_path" ;
-
     String StreetAddress = "street_address";
-
     String Claimed = "claimed";
-
     String ClaimingUser = "claiming_user";
-
     String ClaimingUserName = "claiming_user_name";
-
     String PostingUser = "posting_user";
-
     String PostingUserName = "posting_user_name";
-
     String PostDescription = "description";
-
     String ServerUploadPath ="https://junkeaz.000webhostapp.com/post_listing_to_server.php" ;
 
     @Override
@@ -89,27 +64,18 @@ public class ImageUploads extends AppCompatActivity {
         setContentView(R.layout.activitiy_images);
 
         imageView = (ImageView)findViewById(R.id.imageView);
-
         editTextImageTitle = (EditText)findViewById(R.id.editTextImageName);
-
         editTextPostDescription = (EditText)findViewById(R.id.editTextPostDescription);
-
         editTextStreetAddress = (EditText)findViewById(R.id.editTextStreetAddress);
-
         SelectImageGallery = (Button)findViewById(R.id.buttonSelect);
-
         UploadImageServer = (Button)findViewById(R.id.buttonUpload);
-
         SelectImageGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Intent intent = new Intent();
-
                 intent.setType("image/*");
-
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-
                 startActivityForResult(Intent.createChooser(intent, "Select Image From Gallery"), 1);
 
             }
@@ -140,7 +106,6 @@ public class ImageUploads extends AppCompatActivity {
                 GetStreetAddressEditText = editTextStreetAddress.getText().toString();
 
                 ImageUploadToServerFunction();
-
             }
         });
     }
@@ -154,7 +119,6 @@ public class ImageUploads extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int RC, int RQC, Intent I) {
-
         super.onActivityResult(RC, RQC, I);
 
         if (RC == 1 && RQC == RESULT_OK && I != null && I.getData() != null) {
@@ -162,11 +126,9 @@ public class ImageUploads extends AppCompatActivity {
             Uri uri = I.getData();
 
             try {
-
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
                 imageView.setImageBitmap(bitmap);
-
             } catch (IOException e) {
 
                 e.printStackTrace();

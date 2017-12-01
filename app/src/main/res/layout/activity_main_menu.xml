@@ -33,6 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:onClick="buttonOnClick"
         android:text="View Items"
         tools:layout_editor_absoluteX="147dp"
         tools:layout_editor_absoluteY="0dp" />

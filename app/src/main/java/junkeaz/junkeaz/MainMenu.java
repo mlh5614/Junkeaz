@@ -38,7 +38,9 @@ public class MainMenu extends AppCompatActivity {
                 startActivity(new Intent(MainMenu.this, ImageUploads.class));
                 break;
             case R.id.viewListings:
-               // startActivity(new Intent( MainMenu.this, ImageUploads.class));
+                Intent intent = new Intent(MainMenu.this, ViewListings.class);
+                startActivity(intent);
+                //startActivity(new Intent( MainMenu.this, ViewListings.class));
                 break;
             default:
                 //do nothing

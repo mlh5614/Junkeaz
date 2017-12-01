@@ -41,6 +41,8 @@
         <activity android:name=".ImageUploads" />
         <activity android:name=".MainMenu" />
         <activity android:name=".NewPost" />
+        <activity android:name=".ViewPosts" />
+        <activity android:name=".ViewListings" />
         <activity android:name=".Profile" />
         <activity android:name=".MapsActivity" />
 

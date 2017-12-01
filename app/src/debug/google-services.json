@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "85054988045",
+    "project_id": "firebase-junkeaz"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85054988045:android:f883d30a97efadff",
+        "android_client_info": {
+          "package_name": "junkeaz.junkeaz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "85054988045-i3qis19msfjvivust5ice2v3319cecrd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "junkeaz.junkeaz",
+            "certificate_hash": "9382313258bc5a4b914a9dc3ba00fdf922af19b2"
+          }
+        },
+        {
+          "client_id": "85054988045-a5colssr1s1go4fu85s9t5gibftvt1dk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARqFFm1Pp3YQhTkrcBajJ2GdZBrhRAOuk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
