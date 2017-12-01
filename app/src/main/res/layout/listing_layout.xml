@@ -8,19 +8,33 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-
+            android:padding="@dimen/activity_horizontal_margin"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_above="@+id/LinearLay2"
+            android:id="@+id/linearLay1">
 
             <com.android.volley.toolbox.NetworkImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/imageView" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:padding="@dimen/activity_horizontal_margin"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/linearLay2">
+
+
+
             <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                 >
 
                 <TableRow>
                     <TextView
