@@ -3,7 +3,7 @@ package junkeaz.junkeaz;
 
 public class FeedConfiguration {
 
-    public static final String ServerURL ="https://junkeaz.000webhostapp.com/listingFeed.php?page=";
+    public static final String ServerURL ="http://junkeaz.xyz/listingFeed.php?page=";
 
     //public static final String PostingUser = "posting_user";
 

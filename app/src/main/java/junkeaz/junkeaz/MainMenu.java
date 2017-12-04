@@ -31,15 +31,25 @@ public class MainMenu extends AppCompatActivity {
     public void buttonOnClick(View view) {
         switch (view.getId()) {
             case R.id.profileButton:
-                startActivity(new Intent(MainMenu.this, Profile.class));
+                Intent openProfileActivity= new Intent(MainMenu.this, MainActivity.class);
+                openProfileActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivityIfNeeded(openProfileActivity, 0);
+                //startActivity(new Intent (MainMenu.this, MainActivity.class));
+                //startActivity(new Intent(MainMenu.this, Profile.class));
                 break;
 
             case R.id.newPostButton:
-                startActivity(new Intent(MainMenu.this, ImageUploads.class));
+                Intent openPostActivity= new Intent(MainMenu.this, ImageUploads.class);
+                openPostActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivityIfNeeded(openPostActivity, 0);
+                //startActivity(new Intent(MainMenu.this, ImageUploads.class));
                 break;
             case R.id.viewListings:
-                Intent intent = new Intent(MainMenu.this, ViewListings.class);
-                startActivity(intent);
+                Intent openListActivity= new Intent(MainMenu.this, ViewListings.class);
+                openListActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivityIfNeeded(openListActivity, 0);
+                //Intent intent = new Intent(MainMenu.this, ViewListings.class);
+                //startActivity(intent);
                 //startActivity(new Intent( MainMenu.this, ViewListings.class));
                 break;
             default:

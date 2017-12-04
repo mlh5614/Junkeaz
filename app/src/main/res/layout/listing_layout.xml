@@ -8,116 +8,111 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:padding="@dimen/activity_horizontal_margin"
-            android:orientation="vertical"
+            android:id="@+id/linearLay1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/LinearLay2"
-            android:id="@+id/linearLay1">
+            android:layout_height="299dp"
+
+            android:orientation="vertical"
+            android:padding="@dimen/activity_horizontal_margin">
 
             <com.android.volley.toolbox.NetworkImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView" />
+                android:id="@+id/imageView"
+                android:layout_width="352dp"
+                android:layout_height="128dp"
+                android:layout_marginVertical="100dp" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:padding="@dimen/activity_horizontal_margin"
-            android:orientation="vertical"
+            android:id="@+id/linearLay2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/linearLay2">
+            android:layout_height="296dp"
 
+            android:orientation="vertical"
+            android:padding="@dimen/activity_horizontal_margin">
 
 
             <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                 >
+                android:layout_height="wrap_content">
 
                 <TableRow>
+
                     <TextView
-                        android:text="Title"
-                        android:paddingRight="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        />
+                        android:paddingRight="10dp"
+                        android:text="Title" />
 
                     <TextView
                         android:id="@+id/textViewTitle"
-                        android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        />
+                        android:textStyle="bold" />
 
                 </TableRow>
 
                 <TableRow>
+
                     <TextView
-                        android:text="Posting User"
-                        android:paddingRight="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        />
+                        android:paddingRight="10dp"
+                        android:text="Posting User" />
 
                     <TextView
                         android:id="@+id/textViewPostingUser"
-                        android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        />
+                        android:textStyle="bold" />
 
                 </TableRow>
 
                 <TableRow>
+
                     <TextView
-                        android:text="Description"
-                        android:paddingRight="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        />
+                        android:paddingRight="10dp"
+                        android:text="Description" />
 
                     <TextView
                         android:id="@+id/textViewDescription"
-                        android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        />
+                        android:textStyle="bold" />
 
                 </TableRow>
 
                 <TableRow>
+
                     <TextView
-                        android:text="Street Address"
-                        android:paddingRight="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        />
+                        android:paddingRight="10dp"
+                        android:text="Street Address" />
 
                     <TextView
                         android:id="@+id/textViewStreetAddress"
-                        android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        />
+                        android:textStyle="bold" />
 
                 </TableRow>
 
                 <TableRow>
+
                     <TextView
-                        android:text="Claimed?"
-                        android:paddingRight="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        />
+                        android:paddingRight="10dp"
+                        android:text="Claimed?" />
 
                     <TextView
                         android:id="@+id/textViewClaimStatus"
-                        android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        />
+                        android:textStyle="bold" />
 
                 </TableRow>
 

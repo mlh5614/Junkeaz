@@ -1,9 +1,12 @@
 package junkeaz.junkeaz;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -41,7 +44,7 @@ public class ImageUploads extends AppCompatActivity {
     ProgressDialog progressDialog ;
     String GetImageTitleEditText = "title1";
     String GetPostDescriptionEditText = "description1";
-    String GetStreetAddressEditText = "123 abc st";
+    String GetStreetAddressEditText = "123abc";
     String GetPostingUser = "user1";
     String GetClaimingUser = "unclaimed";
     String GetPostingUserName = "max";
@@ -56,12 +59,17 @@ public class ImageUploads extends AppCompatActivity {
     String PostingUser = "posting_user";
     String PostingUserName = "posting_user_name";
     String PostDescription = "description";
-    String ServerUploadPath ="https://junkeaz.000webhostapp.com/post_listing_to_server.php" ;
+    String ServerUploadPath ="http://junkeaz.xyz/post_listing_to_server.php" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activitiy_images);
+
+        //set the default image icon
+       // bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.firebase_lockup_400);
+        //imageView.setImageBitmap(bitmap);
+
 
         imageView = (ImageView)findViewById(R.id.imageView);
         editTextImageTitle = (EditText)findViewById(R.id.editTextImageName);
@@ -89,8 +97,26 @@ public class ImageUploads extends AppCompatActivity {
                 //Get the Post Title
                 GetImageTitleEditText = editTextImageTitle.getText().toString();
 
+                if (editTextImageTitle.getText().toString().equals("")) {
+                    GetImageTitleEditText = "title1";
+                }
+
+
                 //Get the Post Description
                 GetPostDescriptionEditText = editTextPostDescription.getText().toString();
+
+                if (editTextPostDescription.getText().toString().equals("")) {
+                    GetPostDescriptionEditText = "description1";
+                }
+
+                //Get the Street Address
+
+                GetStreetAddressEditText = editTextStreetAddress.getText().toString();
+
+                //set if null or empty
+                if (editTextStreetAddress.getText().toString().equals("")  || editTextStreetAddress.getText().toString().equals(null)) {
+                    GetStreetAddressEditText = "123abc";
+                }
 
                 //Get the User ID and Display Name
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -100,10 +126,12 @@ public class ImageUploads extends AppCompatActivity {
                     Uri photoUrl = user.getPhotoUrl();
                     boolean emailVerified = user.isEmailVerified();
                     GetPostingUser = user.getUid();
+
+                  //  System.out.print("user.getUid() = "+user.getUid());
                 }
 
-                //Get the Street Address
-                GetStreetAddressEditText = editTextStreetAddress.getText().toString();
+
+
 
                 ImageUploadToServerFunction();
             }
@@ -129,6 +157,7 @@ public class ImageUploads extends AppCompatActivity {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
                 imageView.setImageBitmap(bitmap);
+                //imageView.setImageResource(android.R.color.transparent);
             } catch (IOException e) {
 
                 e.printStackTrace();
@@ -169,13 +198,24 @@ public class ImageUploads extends AppCompatActivity {
                 // Printing uploading success message coming from server on android app.
                 Toast.makeText(ImageUploads.this,string1,Toast.LENGTH_LONG).show();
 
-                if (string1.equals("Your Post Has Been Uploaded.")) {
-                    startActivity(new Intent(ImageUploads.this, MainMenu.class));
+                Log.d("string1",string1);
 
+                if (string1.contains("Uploaded")) {
+
+                    imageView.setImageResource(android.R.color.transparent);
+                    editTextImageTitle.setText("");
+                    editTextPostDescription.setText("");
+                    editTextStreetAddress.setText("");
+                    //startActivity(new Intent(ImageUploads.this, MainMenu.class));
+
+
+                    Intent openMainActivity= new Intent(ImageUploads.this, MainMenu.class);
+                    openMainActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivityIfNeeded(openMainActivity, 0);
                 }
 
                 // Setting image as transparent after done uploading.
-                imageView.setImageResource(android.R.color.transparent);
+               // imageView.setImageResource(android.R.color.transparent);
 
 
             }
@@ -202,7 +242,7 @@ public class ImageUploads extends AppCompatActivity {
                 HashMapParams.put(PostDescription, GetPostDescriptionEditText);
 
                 //image_path
-                HashMapParams.put(ImagePath, ConvertImage);
+                //HashMapParams.put(ImagePath, ConvertImage);
 
                 //street_address
                 HashMapParams.put(StreetAddress, GetStreetAddressEditText);
@@ -216,7 +256,18 @@ public class ImageUploads extends AppCompatActivity {
                 //claiming_user_name
                 HashMapParams.put(ClaimingUserName, GetClaimingUserName);
 
+                Log.d("HashMapParams",HashMapParams.toString());
+
                 String FinalData = imageProcessClass.ImageHttpRequest(ServerUploadPath, HashMapParams);
+
+                Log.d("FinalData",FinalData);
+
+                //code to retry with fail
+                for (int i = 0; i < 3; i++) {
+                    if (FinalData == "fail") {
+                        FinalData = imageProcessClass.ImageHttpRequest(ServerUploadPath, HashMapParams);
+                    }
+                }
 
                 return FinalData;
             }
@@ -236,6 +287,7 @@ public class ImageUploads extends AppCompatActivity {
 
                 URL url;
                 HttpURLConnection httpURLConnectionObject ;
+                InputStream InPutStream;
                 OutputStream OutPutStream;
                 BufferedWriter bufferedWriterObject ;
                 BufferedReader bufferedReaderObject ;
@@ -245,21 +297,37 @@ public class ImageUploads extends AppCompatActivity {
 
                 httpURLConnectionObject = (HttpURLConnection) url.openConnection();
 
+
+               // while (httpURLConnectionObject == null) {
+                 //   httpURLConnectionObject = (HttpURLConnection) url.openConnection();
+                //}
+
                 httpURLConnectionObject.setReadTimeout(19000);
 
                 httpURLConnectionObject.setConnectTimeout(19000);
 
                 httpURLConnectionObject.setRequestMethod("POST");
 
+                //httpURLConnectionObject.setRequestProperty("Accept-Encoding", "identity");
+                //httpURLConnectionObject.setRequestProperty("Content-Type","Application/json");
+
                 httpURLConnectionObject.setDoInput(true);
 
                 httpURLConnectionObject.setDoOutput(true);
+
+                httpURLConnectionObject.setChunkedStreamingMode(0);
+
+                httpURLConnectionObject.connect();
 
                 OutPutStream = httpURLConnectionObject.getOutputStream();
 
                 bufferedWriterObject = new BufferedWriter(
 
                         new OutputStreamWriter(OutPutStream, "UTF-8"));
+
+                //testing
+                Log.d("bufferedWriterDataFN",bufferedWriterDataFN(PData));
+                Log.d("httpURLConnectionObject",httpURLConnectionObject.toString());
 
                 bufferedWriterObject.write(bufferedWriterDataFN(PData));
 
@@ -269,23 +337,54 @@ public class ImageUploads extends AppCompatActivity {
 
                 OutPutStream.close();
 
+               // httpURLConnectionObject.connect();
+
+            //    if (httpURLConnectionObject.getResponseMessage() == null){
+             //       stringBuilder = new StringBuilder();
+              //      stringBuilder.append("fail");
+               // }
+
+               // if (httpURLConnectionObject.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                 //   stringBuilder = new StringBuilder();
+                //    stringBuilder.append("fail");
+               // }
                 RC = httpURLConnectionObject.getResponseCode();
 
-                if (RC == HttpsURLConnection.HTTP_OK) {
+                if (RC == HttpURLConnection.HTTP_OK) {
+                //else {
+                   // RC = httpURLConnectionObject.getResponseCode();
 
-                    bufferedReaderObject = new BufferedReader(new InputStreamReader(httpURLConnectionObject.getInputStream()));
+                    InPutStream = httpURLConnectionObject.getInputStream();
+
+                    bufferedReaderObject = new BufferedReader(new InputStreamReader(InPutStream, "UTF-8"));
 
                     stringBuilder = new StringBuilder();
 
                     String RC2;
 
-                    while ((RC2 = bufferedReaderObject.readLine()) != null){
+                    /*if ((RC2 = bufferedReaderObject.readLine()) == null) {
+                        stringBuilder.append("\n");
+                    }
+                    else {
+                        do {
+                                stringBuilder.append(RC2 + "\n");
+                        } while ((RC2 = bufferedReaderObject.readLine()) != null);
+                    }*/
 
+                    while ((RC2 = bufferedReaderObject.readLine()) != null){
                         stringBuilder.append(RC2);
                     }
-                }
 
-            } catch (Exception e) {
+                    InPutStream.close();
+                    bufferedReaderObject.close();
+                }
+                //else {
+
+//                }
+
+                httpURLConnectionObject.disconnect();
+            }
+            catch (Exception e) {
                 e.printStackTrace();
             }
             return stringBuilder.toString();
@@ -295,21 +394,31 @@ public class ImageUploads extends AppCompatActivity {
 
             StringBuilder stringBuilderObject;
 
+            check = false;
+
             stringBuilderObject = new StringBuilder();
 
             for (Map.Entry<String, String> KEY : HashMapParams.entrySet()) {
 
-                if (check)
+                if (!check) {
 
-                    check = false;
-                else
+                    stringBuilderObject.append(URLEncoder.encode(KEY.getKey(), "UTF-8"));
+
+                    stringBuilderObject.append("=");
+
+                    stringBuilderObject.append(URLEncoder.encode(KEY.getValue(), "UTF-8"));
+
+                    check = true;
+
+                } else {
                     stringBuilderObject.append("&");
 
-                stringBuilderObject.append(URLEncoder.encode(KEY.getKey(), "UTF-8"));
+                    stringBuilderObject.append(URLEncoder.encode(KEY.getKey(), "UTF-8"));
 
-                stringBuilderObject.append("=");
+                    stringBuilderObject.append("=");
 
-                stringBuilderObject.append(URLEncoder.encode(KEY.getValue(), "UTF-8"));
+                    stringBuilderObject.append(URLEncoder.encode(KEY.getValue(), "UTF-8"));
+                }
             }
 
             return stringBuilderObject.toString();

@@ -23,6 +23,11 @@
                 android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:layout_above="@+id/description"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:scaleType="centerCrop" />
@@ -35,6 +40,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="5dp"
+
                 android:textColor="@color/cardview_dark_background"
                 android:text="test"
                 android:textSize="12sp"
