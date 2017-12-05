@@ -39,7 +39,7 @@ public class MainMenu extends AppCompatActivity {
                 break;
 
             case R.id.newPostButton:
-                Intent openPostActivity= new Intent(MainMenu.this, ImageUploads.class);
+                Intent openPostActivity= new Intent(MainMenu.this, PostListing.class);
                 openPostActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivityIfNeeded(openPostActivity, 0);
                 //startActivity(new Intent(MainMenu.this, ImageUploads.class));

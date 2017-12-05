@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
+    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "junkeaz.junkeaz"
         minSdkVersion 23
@@ -38,6 +39,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.google.android.gms:play-services-maps:11.6.0'
     compile 'com.squareup.okhttp3:okhttp:3.5.0'
+
     compile 'com.squareup.okhttp3:okhttp-urlconnection:3.5.0'
     compile 'com.mcxiaoke.volley:library-aar:1.0.0'
     compile 'com.android.support:recyclerview-v7:26.1.0'

@@ -59,8 +59,8 @@ public class ImageUploads extends AppCompatActivity {
     String PostingUser = "posting_user";
     String PostingUserName = "posting_user_name";
     String PostDescription = "description";
-    String ServerUploadPath ="http://junkeaz.xyz/post_listing_to_server.php" ;
-
+    //String ServerUploadPath ="http://junkeaz.xyz/post_listing_to_server.php" ;
+    String ServerUploadPath ="http://junkeaz.xyz/postListing3.php" ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,45 +90,28 @@ public class ImageUploads extends AppCompatActivity {
         });
 
 
+
+        //set if null or empty
+
+
+        //Get the User ID and Display Name
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            GetPostingUserName = user.getDisplayName();
+            String email = user.getEmail();
+            Uri photoUrl = user.getPhotoUrl();
+            boolean emailVerified = user.isEmailVerified();
+            GetPostingUser = user.getUid();
+
+            //  System.out.print("user.getUid() = "+user.getUid());
+        }
+
+
+
+
         UploadImageServer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //Get the Post Title
-                GetImageTitleEditText = editTextImageTitle.getText().toString();
-
-                if (editTextImageTitle.getText().toString().equals("")) {
-                    GetImageTitleEditText = "title1";
-                }
-
-
-                //Get the Post Description
-                GetPostDescriptionEditText = editTextPostDescription.getText().toString();
-
-                if (editTextPostDescription.getText().toString().equals("")) {
-                    GetPostDescriptionEditText = "description1";
-                }
-
-                //Get the Street Address
-
-                GetStreetAddressEditText = editTextStreetAddress.getText().toString();
-
-                //set if null or empty
-                if (editTextStreetAddress.getText().toString().equals("")  || editTextStreetAddress.getText().toString().equals(null)) {
-                    GetStreetAddressEditText = "123abc";
-                }
-
-                //Get the User ID and Display Name
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user != null) {
-                    GetPostingUserName = user.getDisplayName();
-                    String email = user.getEmail();
-                    Uri photoUrl = user.getPhotoUrl();
-                    boolean emailVerified = user.isEmailVerified();
-                    GetPostingUser = user.getUid();
-
-                  //  System.out.print("user.getUid() = "+user.getUid());
-                }
 
 
 
@@ -166,16 +149,22 @@ public class ImageUploads extends AppCompatActivity {
     }
 
     public void ImageUploadToServerFunction(){
+        GetImageTitleEditText = editTextImageTitle.getText().toString();
 
+
+        GetPostDescriptionEditText = editTextPostDescription.getText().toString();
+
+
+        GetStreetAddressEditText = editTextStreetAddress.getText().toString();
         ByteArrayOutputStream byteArrayOutputStreamObject ;
 
         byteArrayOutputStreamObject = new ByteArrayOutputStream();
 
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStreamObject);
 
         byte[] byteArrayVar = byteArrayOutputStreamObject.toByteArray();
 
-        final String ConvertImage = Base64.encodeToString(byteArrayVar, Base64.DEFAULT);
+        final String ConvertImage = Base64.encodeToString(byteArrayVar, Base64.NO_WRAP);
 
         class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
 
@@ -242,7 +231,7 @@ public class ImageUploads extends AppCompatActivity {
                 HashMapParams.put(PostDescription, GetPostDescriptionEditText);
 
                 //image_path
-                //HashMapParams.put(ImagePath, ConvertImage);
+                HashMapParams.put(ImagePath, ConvertImage);
 
                 //street_address
                 HashMapParams.put(StreetAddress, GetStreetAddressEditText);
