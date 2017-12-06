@@ -52,6 +52,16 @@ public class MainMenu extends AppCompatActivity {
                 //startActivity(intent);
                 //startActivity(new Intent( MainMenu.this, ViewListings.class));
                 break;
+            case R.id.buttonMyPosts:
+                Intent openMyPostsActivity= new Intent(MainMenu.this, ViewMyPostList.class);
+                openMyPostsActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivityIfNeeded(openMyPostsActivity, 0);
+                break;
+            case R.id.buttonMyClaims:
+                Intent openMyClaimsActivity= new Intent(MainMenu.this, ViewMyClaimList.class);
+                openMyClaimsActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivityIfNeeded(openMyClaimsActivity, 0);
+                break;
             default:
                 //do nothing
                 break;

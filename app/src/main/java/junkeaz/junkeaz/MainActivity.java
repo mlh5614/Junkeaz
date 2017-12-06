@@ -31,7 +31,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "GoogleActivity";
-    private static final int RC_SIGN_IN = 9001;
+    private static final int RC_SIGN_IN = 2;
 
     // [START declare_auth]
     private FirebaseAuth mAuth;
@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google);
 
+
         System.setProperty("http.keepAlive", "false");
 
         // Views
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
         findViewById(R.id.disconnect_button).setOnClickListener(this);
-
+        findViewById(R.id.buttonEnterApp).setOnClickListener(this);
         // [START config_signin]
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -69,18 +70,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mGoogleSignInClient = GoogleSignIn.getClient(MainActivity.this, gso);
 
+        //Log.v(TAG,mAuth.toString());
         // [START initialize_auth]
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+       // Log.v(TAG,mAuth.toString());
+        //FirebaseUser currentUser = mAuth.getCurrentUser();
         //updateUI(currentUser);
 
+        mAuth = FirebaseAuth.getInstance();
         //if there is a current user, sign out so we can test this use case first
-        if (currentUser != null) {
+        /*if (currentUser != null) {
             Intent openMainActivity= new Intent(MainActivity.this, MainMenu.class);
             openMainActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivityIfNeeded(openMainActivity, 0);
             //mAuth.signOut();
-        }
+        }*/
         // [END initialize_auth]
     }
 
@@ -144,9 +148,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
-                            Intent openMainActivity= new Intent(MainActivity.this, MainMenu.class);
-                            openMainActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                            startActivityIfNeeded(openMainActivity, 0);
+                            //Intent openMainActivity= new Intent(MainActivity.this, MainMenu.class);
+                            //openMainActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                            //startActivityIfNeeded(openMainActivity, 0);
                             //startActivity(new Intent(MainActivity.this, MainMenu.class));
                         } else {
                             // If sign in fails, display a message to the user.
@@ -164,6 +168,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     // [END auth_with_google]
 
+/*        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+           .requestIdToken(getString(R.string.default_web_client_id))
+           .requestEmail()
+            .build();
+*/
     // [START signin]
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -199,6 +208,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
     }
 
+    private void enterApp() {
+        Intent openMainActivity= new Intent(MainActivity.this, MainMenu.class);
+        openMainActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivityIfNeeded(openMainActivity, 0);
+    }
+
     @Override
     public void onResume(){
         super.onResume();
@@ -214,11 +229,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
+            findViewById(R.id.buttonEnterApp).setVisibility(View.VISIBLE);
         } else {
             mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText(null);
 
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.buttonEnterApp).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
         }
     }
@@ -232,6 +249,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             signOut();
         } else if (i == R.id.disconnect_button) {
             revokeAccess();
+        } else if (i == R.id.buttonEnterApp) {
+            enterApp();
         }
     }
 }

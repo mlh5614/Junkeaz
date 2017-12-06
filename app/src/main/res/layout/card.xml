@@ -10,6 +10,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:elevation="3dp"
+        android:onClick="onClick"
+        android:clickable="true"
         card_view:cardUseCompatPadding="true"
         card_view:cardElevation="4dp"
         card_view:cardCornerRadius="1dp"

@@ -20,7 +20,10 @@ import android.app.ProgressDialog;
         import android.widget.ImageView;
         import android.widget.Toast;
 
-        import org.apache.http.HttpResponse;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import org.apache.http.HttpResponse;
         import org.apache.http.NameValuePair;
         import org.apache.http.client.HttpClient;
         import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -42,9 +45,12 @@ public class PostListing extends AppCompatActivity {
     EditText editTextImageTitle;
     EditText editTextPostDescription;
     EditText editTextStreetAddress;
+
     String GetImageTitleEditText;
     String GetPostDescriptionEditText;
     String GetStreetAddressEditText;
+    String GetPostingUserName;
+    String GetPostingUser;
     Button SelectImageGallery, UploadImageServer;
     private Uri fileUri;
     String picturePath;
@@ -52,6 +58,7 @@ public class PostListing extends AppCompatActivity {
     Bitmap photo;
     String ba1;
     public static String URL = "http://junkeaz.xyz/postListing2.php";
+    //public static String URL = "http://junkeaz.xyz/postUpdateClaim.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,6 +186,17 @@ public class PostListing extends AppCompatActivity {
 
     }
     public void imageUploadToServer() {
+        //Get the User ID and Display Name
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            GetPostingUserName = user.getDisplayName();
+            String email = user.getEmail();
+            Uri photoUrl = user.getPhotoUrl();
+            boolean emailVerified = user.isEmailVerified();
+            GetPostingUser = user.getUid();
+
+            //  System.out.print("user.getUid() = "+user.getUid());
+        }
         GetImageTitleEditText = editTextImageTitle.getText().toString();
         GetPostDescriptionEditText = editTextPostDescription.getText().toString();
         GetStreetAddressEditText = editTextStreetAddress.getText().toString();
@@ -207,7 +225,8 @@ public class PostListing extends AppCompatActivity {
 
                 ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
                 nameValuePairs.add(new BasicNameValuePair("base64", ConvertImage));
-
+                nameValuePairs.add(new BasicNameValuePair("PostingUser",GetPostingUser));
+                nameValuePairs.add(new BasicNameValuePair("PostingUserName",GetPostingUserName));
                 nameValuePairs.add(new BasicNameValuePair("PostDescription",GetPostDescriptionEditText));
                 nameValuePairs.add(new BasicNameValuePair("StreetAddress",GetStreetAddressEditText));
                 nameValuePairs.add(new BasicNameValuePair("PostTitle", GetImageTitleEditText));

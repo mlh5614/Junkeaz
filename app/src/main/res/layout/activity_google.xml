@@ -40,6 +40,14 @@
             style="@style/ThemeOverlay.MyTextDetail"
             tools:text="Firebase User ID: 123456789abc" />
 
+        <Button
+            android:id="@+id/buttonEnterApp"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_marginVertical="54dp"
+            android:theme="@style/ThemeOverlay.MyDarkButton"
+            android:text="Enter App" />
+
     </LinearLayout>
 
 

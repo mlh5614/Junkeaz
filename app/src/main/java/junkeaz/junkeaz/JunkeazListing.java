@@ -11,6 +11,11 @@ public class JunkeazListing {
     private String description;
     private String streetAddress;
     private String claimStatus;
+    private String claimingUser;
+    private String postingUserEmail;
+    private String claimingUserEmail;
+    private String postingUserId;
+    private String claimingUserId;
 
     public JunkeazListing(int id, String imageUrl, String title, String postingUser, String description, String streetAddress, String claimStatus) {
         this.id = id;
@@ -25,7 +30,9 @@ public class JunkeazListing {
     //Getters and Setters
     public int getId() {return id;}
 
-    public void setId(int id) {this.id = id;}
+    public void setId(String id) {
+        this.id = Integer.parseInt(id);
+    }
 
     public String getImageUrl() {
         return imageUrl;
@@ -75,4 +82,23 @@ public class JunkeazListing {
         this.claimStatus = claimStatus;
     }
 
+    public void setClaimingUserId(String claimingUserId) { this.claimingUserId = claimingUserId; }
+
+    public String getClaimingUserId() { return claimingUserId; }
+
+    public void setClaimingUserEmail(String claimingUserEmail) { this.claimingUserEmail = claimingUserEmail; }
+
+    public String getClaimingUserEmail() { return claimingUserEmail; }
+
+    public void setClaimingUser(String claimingUser) { this.claimingUser = claimingUser; }
+
+    public String getClaimingUser() { return claimingUser; }
+
+    public void setPostingUserEmail(String postingUserEmail) { this.postingUserEmail = postingUserEmail; }
+
+    public String getPostingUserEmail() { return postingUserEmail; }
+
+    public void setPostingUserId(String postingUserId) { this.postingUserId = postingUserId; }
+
+    public String getPostingUserId() { return postingUserId; }
 }

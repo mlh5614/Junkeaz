@@ -44,6 +44,8 @@
         <activity android:name=".ViewPosts" />
         <activity android:name=".ViewListings" />
         <activity android:name=".PostListing" />
+        <activity android:name=".ViewMyPostList" />
+        <activity android:name=".ViewMyClaimList" />
         <activity android:name=".WeWillSee" />
         <activity android:name=".Profile" />
         <activity android:name=".MapsActivity" />
