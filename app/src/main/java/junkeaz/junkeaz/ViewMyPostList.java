@@ -182,7 +182,9 @@ public class ViewMyPostList extends AppCompatActivity implements RecyclerView.On
         //Ifscrolled at last then
         if (isLastItemDisplaying(recyclerView)) {
             //Calling the method getdata again
-           // getData();
+            Toast.makeText(ViewMyPostList.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+
+            // getData();
         }
     }
 }

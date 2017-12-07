@@ -261,7 +261,7 @@ public class PostListing extends AppCompatActivity {
                 pd.dismiss();
                 Toast.makeText(PostListing.this,st,Toast.LENGTH_LONG).show();
 
-                if (st.contains("Uploaded")) {
+                if (st.contains("Been Uploaded")) {
 
                     imageView.setImageResource(android.R.color.transparent);
                     checkPic = false;

@@ -182,6 +182,8 @@ public class ViewMyClaimList extends AppCompatActivity implements RecyclerView.O
         //Ifscrolled at last then
         if (isLastItemDisplaying(recyclerView)) {
             //Calling the method getdata again
+            Toast.makeText(ViewMyClaimList.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+
             // getData();
         }
     }
