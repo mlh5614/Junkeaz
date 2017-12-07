@@ -136,8 +136,8 @@ public class ViewListings extends AppCompatActivity implements RecyclerView.OnSc
                 junkeazListing.setClaimingUser(json.getString(FeedConfiguration.ClaimingUserName));
                 junkeazListing.setClaimingUserId(json.getString(FeedConfiguration.ClaimingUser));
                 junkeazListing.setPostingUserId(json.getString(FeedConfiguration.PostingUser));
-                //junkeazListing.setPostingUserEmail(json.getString(FeedConfiguration.PostingUserEmail));
-                //junkeazListing.setClaimingUserEmail(json.getString(FeedConfiguration.ClaimingUserEmail));
+                junkeazListing.setPostingUserEmail(json.getString(FeedConfiguration.PostingUserEmail));
+                junkeazListing.setClaimingUserEmail(json.getString(FeedConfiguration.ClaimingUserEmail));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

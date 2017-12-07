@@ -147,6 +147,11 @@ public class ViewMyClaimList extends AppCompatActivity implements RecyclerView.O
                 junkeazListing.setDescription(json.getString(FeedConfiguration.PostDescription));
                 junkeazListing.setStreetAddress(json.getString(FeedConfiguration.StreetAddress));
                 junkeazListing.setClaimStatus(json.getString(FeedConfiguration.Claimed));
+                junkeazListing.setClaimingUser(json.getString(FeedConfiguration.ClaimingUserName));
+                junkeazListing.setClaimingUserId(json.getString(FeedConfiguration.ClaimingUser));
+                junkeazListing.setPostingUserId(json.getString(FeedConfiguration.PostingUser));
+                junkeazListing.setPostingUserEmail(json.getString(FeedConfiguration.PostingUserEmail));
+                junkeazListing.setClaimingUserEmail(json.getString(FeedConfiguration.ClaimingUserEmail));
                 if (json.getString(FeedConfiguration.ClaimingUser).equals(myUserId)) {
                     listJunkeazListings.add(junkeazListing);
                 }

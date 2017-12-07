@@ -51,7 +51,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     private String getClaimingUserName;
     private String getClaimingUserId;
     private String getClaimingUserEmail;
-    public static String URL = "http://junkeaz.xyz/postUpdateClaim.php";
+    public static String URL = "http://junkeaz.xyz/postUpdateClaim2.php";
 
     //Constructor of this class
     public CardAdapter(List<JunkeazListing> junkeazListings, Context context){
@@ -101,12 +101,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     }
 
     public void updateClaimToDB(CharSequence postId) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            getClaimingUserName = user.getDisplayName();
-            getClaimingUserId = user.getUid();
-            getClaimingUserEmail = user.getEmail();
-        }
+
 
         Log.v("log_tag","postId="+postId);
         getPostId = (String) postId;
@@ -197,6 +192,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         //Initializing Views
         public ViewHolder(View itemView) {
             super(itemView);
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null) {
+                getClaimingUserName = user.getDisplayName();
+                getClaimingUserId = user.getUid();
+                getClaimingUserEmail = user.getEmail();
+            }
             imageView = (NetworkImageView) itemView.findViewById(R.id.imageView);
             textViewPostId = (TextView) itemView.findViewById(R.id.textViewPostId);
             textViewTitle = (TextView) itemView.findViewById(R.id.textViewTitle);
@@ -224,12 +225,14 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
                 @Override public void onClick(View view) {
                     buttonClaimItem.setVisibility(View.GONE);
-                    if (textViewClaimStatus.getText().equals("no")) {
+                    if (textViewPostingUserEmail.getText().equals(getClaimingUserEmail)) {
+                        Toast.makeText(context,"You Can't Claim Your Own Item. Sorry!",Toast.LENGTH_LONG).show();
+                    } else if (textViewClaimStatus.getText().equals("no")) {
                         updateClaimToDB(textViewPostId.getText());
                         Log.v("log_tag", "buttonClaimItemClickedForPost" + textViewPostId.getText());
                         // Log.v("log_tag","s="+s);
                     } else {
-                        Toast.makeText(context,"This Item Has Already Been Claimed! Sorry!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,"This Item Has Already Been Claimed. Sorry!",Toast.LENGTH_LONG).show();
                     }
                 }
             });

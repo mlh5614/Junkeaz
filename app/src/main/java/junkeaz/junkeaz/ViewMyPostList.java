@@ -31,7 +31,7 @@ import org.json.JSONArray;
 
 public class ViewMyPostList extends AppCompatActivity implements RecyclerView.OnScrollChangeListener {
 
-    //Creating a List of superheroes
+    //Creating a List of junk
     private List<JunkeazListing> listJunkeazListings;
     String myUserId;
     String myUserName;
@@ -138,7 +138,7 @@ public class ViewMyPostList extends AppCompatActivity implements RecyclerView.On
                 //Getting json
                 json = array.getJSONObject(i);
 
-                //Adding data to the superhero object
+                //Adding data to the junkeaz object
 
                 junkeazListing.setImageUrl(json.getString(FeedConfiguration.ImagePath));
                 junkeazListing.setId(json.getString(FeedConfiguration.id));
@@ -147,6 +147,11 @@ public class ViewMyPostList extends AppCompatActivity implements RecyclerView.On
                 junkeazListing.setDescription(json.getString(FeedConfiguration.PostDescription));
                 junkeazListing.setStreetAddress(json.getString(FeedConfiguration.StreetAddress));
                 junkeazListing.setClaimStatus(json.getString(FeedConfiguration.Claimed));
+                junkeazListing.setClaimingUser(json.getString(FeedConfiguration.ClaimingUserName));
+                junkeazListing.setClaimingUserId(json.getString(FeedConfiguration.ClaimingUser));
+                junkeazListing.setPostingUserId(json.getString(FeedConfiguration.PostingUser));
+                junkeazListing.setPostingUserEmail(json.getString(FeedConfiguration.PostingUserEmail));
+                junkeazListing.setClaimingUserEmail(json.getString(FeedConfiguration.ClaimingUserEmail));
                 if (json.getString(FeedConfiguration.PostingUser).equals(myUserId)) {
                     listJunkeazListings.add(junkeazListing);
                 }

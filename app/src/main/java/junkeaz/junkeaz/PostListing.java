@@ -41,11 +41,12 @@ public class PostListing extends AppCompatActivity {
     Bitmap bitmap;
     String st;
     Button btpic, btnup;
+    Boolean checkPic=false;
     ImageView imageView;
     EditText editTextImageTitle;
     EditText editTextPostDescription;
     EditText editTextStreetAddress;
-
+    String getPostingUserEmail;
     String GetImageTitleEditText;
     String GetPostDescriptionEditText;
     String GetStreetAddressEditText;
@@ -57,7 +58,7 @@ public class PostListing extends AppCompatActivity {
     Uri selectedImage;
     Bitmap photo;
     String ba1;
-    public static String URL = "http://junkeaz.xyz/postListing2.php";
+    public static String URL = "http://junkeaz.xyz/postListing4.php";
     //public static String URL = "http://junkeaz.xyz/postUpdateClaim.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,8 +123,12 @@ public class PostListing extends AppCompatActivity {
 
 
 
-
+            if (checkPic == true) {
                 imageUploadToServer();
+            }
+            else {
+                Toast.makeText(PostListing.this,"You Must Select An Image.",Toast.LENGTH_LONG).show();
+            }
             }
         });
     }
@@ -158,6 +163,8 @@ public class PostListing extends AppCompatActivity {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
                 imageView.setImageBitmap(bitmap);
+
+                checkPic = true;
                 //imageView.setImageResource(android.R.color.transparent);
             } catch (IOException e) {
 
@@ -190,7 +197,7 @@ public class PostListing extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             GetPostingUserName = user.getDisplayName();
-            String email = user.getEmail();
+            getPostingUserEmail = user.getEmail();
             Uri photoUrl = user.getPhotoUrl();
             boolean emailVerified = user.isEmailVerified();
             GetPostingUser = user.getUid();
@@ -227,6 +234,7 @@ public class PostListing extends AppCompatActivity {
                 nameValuePairs.add(new BasicNameValuePair("base64", ConvertImage));
                 nameValuePairs.add(new BasicNameValuePair("PostingUser",GetPostingUser));
                 nameValuePairs.add(new BasicNameValuePair("PostingUserName",GetPostingUserName));
+                nameValuePairs.add(new BasicNameValuePair("PostingUserEmail",getPostingUserEmail));
                 nameValuePairs.add(new BasicNameValuePair("PostDescription",GetPostDescriptionEditText));
                 nameValuePairs.add(new BasicNameValuePair("StreetAddress",GetStreetAddressEditText));
                 nameValuePairs.add(new BasicNameValuePair("PostTitle", GetImageTitleEditText));
@@ -256,6 +264,7 @@ public class PostListing extends AppCompatActivity {
                 if (st.contains("Uploaded")) {
 
                     imageView.setImageResource(android.R.color.transparent);
+                    checkPic = false;
                     editTextImageTitle.setText("");
                     editTextPostDescription.setText("");
                     editTextStreetAddress.setText("");
